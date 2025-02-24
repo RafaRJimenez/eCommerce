@@ -31,6 +31,7 @@ navigator.serviceWorker.register('/firebase-messaging-sw.js')
           .then((currentToken) => {
             if (currentToken) {
               console.log('currentToken:', currentToken);
+              sendTokenToServer(currentToken);
             } else {
               console.log('No registration token available. Request permission to generate one.');
             }
@@ -65,3 +66,10 @@ onMessage(messaging, (payload) => {
     });
   }
 });
+
+
+const sendTokenToServer = token => {
+  if (localStorage.getItem("tokenSentoToServer")) return;
+  // implementar la lógica de que en el servidor se almacene el token
+  localStorage.setItem("tokenSentoToServer", "1");
+}
