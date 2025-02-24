@@ -15,8 +15,8 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
+export const app = initializeApp(firebaseConfig);
+export const messaging = getMessaging(app);
 
 // Register the service worker
 navigator.serviceWorker.register('/firebase-messaging-sw.js')
@@ -65,5 +65,3 @@ onMessage(messaging, (payload) => {
     });
   }
 });
-
-export { app };

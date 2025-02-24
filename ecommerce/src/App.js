@@ -2,13 +2,31 @@
 import './App.css';
 import Header from './components/Header.jsx';
 import { useState, createContext, useContext } from 'react';
+import { app, messaging } from './firebase/index.js';
 import Home from './routes/Home.jsx';
 import Login from './routes/Login.jsx';
 import Register from './routes/Register.jsx';
-import { Toaster } from 'react-hot-toast';
+import { Toaster, toast } from 'react-hot-toast';
 import Shopping from './routes/Shopping.jsx';
+import Footer  from './components/Footer.jsx';
+import { onMessage } from 'firebase/messaging';
 
 export const AppContext = createContext(null);
+
+
+onMessage(messaging, (payload) => {
+  console.log('Message received live right now ', payload);
+  toast.custom((t) => (
+    <div
+      className={`toast toast-${t.visible ? 'visible' : 'hidden'}`}
+      style={{ backgroundColor: t.visible ? '#333' : 'transparent' }}
+    >
+      <h2>{payload.notification.title}</h2>
+      <p>{payload.notification.body}</p>
+    </div>
+  ));
+  // ...
+});
 
 function App() {
   const [route, setRoute] = useState('home');
@@ -22,9 +40,7 @@ function App() {
     {route === "register" && <Register />}
     {route === "shopping" && <Shopping />}
     {user && <div>user logged: {user.uid}</div>}
-    <footer className='fixed-bottom' >
-      <p>© 2021</p>
-    </footer>
+    <Footer></Footer>
     </AppContext.Provider>
   );
 }
