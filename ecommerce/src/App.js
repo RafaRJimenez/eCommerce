@@ -10,6 +10,7 @@ import { Toaster, toast } from 'react-hot-toast';
 import Shopping from './routes/Shopping.jsx';
 import Footer  from './components/Footer.jsx';
 import { onMessage } from 'firebase/messaging';
+import TaskList from './routes/TaskList.jsx';
 
 export const AppContext = createContext(null);
 
@@ -39,6 +40,7 @@ function App() {
     {route === "login" && <Login />}
     {route === "register" && <Register />}
     {route === "shopping" && <Shopping />}
+    {route === "tasklist" && <TaskList />}
     {user && <div>user logged: {user.uid}</div>}
     <Footer></Footer>
     </AppContext.Provider>

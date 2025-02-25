@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { getFirestore } from "firebase/firestore";
 
 const vapidKey = "BGpXgQiWoryMV7s6Zi3cvaLhs1f4d4ATjapbVv3wDYe8YRCKI-hoYHqBmlF4-Gao4cwetG_Ry1urxQykAp8sdJU";
 
@@ -73,3 +74,5 @@ const sendTokenToServer = token => {
   // implementar la lógica de que en el servidor se almacene el token
   localStorage.setItem("tokenSentoToServer", "1");
 }
+
+export const db = getFirestore(app);
