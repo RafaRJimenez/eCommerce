@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';  
-import { addNewTask, getTasks } from '../firebase/taskController';
+import { addNewTask, getTasks, updateTask, deleteTask  } from '../firebase/taskController';
 
 const task = {
     title: "task 1",
@@ -11,6 +11,9 @@ const TaskList = () => {
     // const [description, setDescription] = useState(task.description);
     const [task, setTask] = useState({ title: "", description: "" });
     const [tasks, setTasks] = useState([]);
+    const [mode, setMode] = useState("add");
+
+
     const createNewTask = async () => {
         console.log(task);
       await addNewTask(task);
@@ -18,13 +21,31 @@ const TaskList = () => {
        initializeTasks();
     }
 
+    const updateExistingTask = async () => {
+        await updateTask(task.id, task);
+        setTask({ title: "", description: "" });
+        setMode("add");
+        initializeTasks();
+    }
+
     const initializeTasks = () => {
         getTasks().then(t => setTasks([...t]))
         .catch(e => console.error(e));  
     };
 
-    useEffect(() => {
+    const editTask = id => {
+        setMode("update");
+        const taskToEdit = tasks.find(t => t.id === id);
+        setTask({...taskToEdit});
+    }
+
+    const removeTask = async id => {
+        await deleteTask(id);
         initializeTasks();
+    }
+
+    useEffect(() => {
+         initializeTasks();
     }, [])
 
     return (
@@ -40,16 +61,23 @@ const TaskList = () => {
             onChange={e => setTask({...task, description: e.target.value})} 
             placeholder="description" />
             <button
-            onClick={createNewTask}
-            > submit task</button>
+            onClick={() => mode === "add" ? createNewTask() : updateExistingTask()}
+            >
+                {mode === "add" ? "Add" : "Update"}
+            </button>
             <button
-            onClick={getTasks}
+            onClick={() => getTasks()}
             >get tasks</button>
             <div>
             {tasks.map(task => (
                 <div key={task.id}>
                     <h1>{task.title}</h1>
                     <p>{task.description}</p>
+                    <button onClick={() => editTask(task.id)}>Edit</button>
+                    <button onClick={() =>
+                     window.confirm("seguro que quieres eliminar esta tarea?") &&
+                     removeTask(task.id)
+                     }>Delete</button>
                 </div>
             ))}
             </div>
