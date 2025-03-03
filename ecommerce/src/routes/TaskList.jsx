@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';  
+import React, {useEffect, useState, useContext} from 'react';  
 import { addNewTask, getTasks, updateTask, deleteTask  } from '../firebase/taskController';
-
+import { AppContext } from '../App';
 const task = {
     title: "task 1",
     description: "description of task 1"
@@ -13,10 +13,11 @@ const TaskList = () => {
     const [tasks, setTasks] = useState([]);
     const [mode, setMode] = useState("add");
 
+    const {user} = useContext(AppContext);
 
     const createNewTask = async () => {
         console.log(task);
-      await addNewTask(task);
+      await addNewTask(task).catch(e => console.error("errror", e));
       setTask({ title: "", description: "" });
        initializeTasks();
     }
@@ -62,6 +63,17 @@ const TaskList = () => {
             placeholder="description" />
             <button
             onClick={() => mode === "add" ? createNewTask() : updateExistingTask()}
+            disabled={!user}
+            style={{
+                    backgroundColor: !user ? '#ccc' : '#ff6347', // Light gray when disabled, Tomato when enabled
+                    color: '#fff',
+                    border: 'none',
+                    padding: '10px 20px',
+                    cursor: !user ? 'not-allowed' : 'pointer', // Not allowed cursor when disabled
+                    margin: '5px',
+                    borderRadius: '4px',
+                    transition: 'background 0.3s ease'
+                }}
             >
                 {mode === "add" ? "Add" : "Update"}
             </button>
@@ -81,6 +93,7 @@ const TaskList = () => {
                 </div>
             ))}
             </div>
+            {!user && <div>necesitas estar logeado para usar la app</div>}
         </div>
     );
 }
