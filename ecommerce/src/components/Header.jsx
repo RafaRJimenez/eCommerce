@@ -22,7 +22,7 @@ const Header = () => {
 
     return (
         <header className="App">
-        <h1  onClick={() => setRoute('home')}>logo</h1>
+        <h1  onClick={() => setRoute('home')}>Fireshopping v2</h1>
         <button
         onClick={() => setRoute('login')}
         >Login</button>
