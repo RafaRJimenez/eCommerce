@@ -49,7 +49,7 @@ const TaskList = () => {
     }, [])
 
     return (
-        <div>
+        <div className='container'>
             <h1>Task List</h1>
             <h2>insert new task</h2>
             <input type="text" value={task.title} 

@@ -4,11 +4,19 @@ import { AppContext } from '../App';
 const Footer = () => {
     const {setRoute} = useContext(AppContext);
     return (
-        <div className='footer'>
-            <h3 onClick={() => setRoute("home")}>home</h3>
-            <h4 onClick={() => setRoute("shopping")}>cart</h4>
-            <h4 onClick={() => setRoute("tasklist")}>Task List</h4>
+        <footer>
+        <div className='footer-container'>
+            <div>
+                <h3 onClick={() => setRoute("home")}>Home</h3>
+            </div>
+            <div>
+                <h4 onClick={() => setRoute("shopping")}>Cart</h4>
+            </div>
+            <div>
+                <h4 onClick={() => setRoute("tasklist")}>Task List</h4>
+            </div>
         </div>
+    </footer>
     );
 }
 
